@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-use yii\db\ActiveQuery;
+use yii\base\Exception;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
@@ -21,11 +21,17 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    /**
+     * @return string название таблицы, сопоставленной с этим ActiveRecord-классом.
+     */
     public static function tableName(): string
     {
         return 'user';
     }
 
+    /**
+     * @return array правила валидации для аттрибутов класса.
+     */
     public function rules(): array
     {
         return [
@@ -36,6 +42,9 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
+    /**
+     * @return string[] названия аттрибутов класса для отображения.
+     */
     public function attributeLabels(): array
     {
         return [
@@ -50,15 +59,18 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Получение роли пользователя
      *
-     * @return ActiveQuery
+     * @return Role
      */
-    public function getRole(): ActiveQuery
+    public function getRole(): Role
     {
         return $this->hasOne(Role::class, ['id' => 'role_id']);
     }
 
     /**
-     * {@inheritdoc}
+     * Находит пользователя по заданному id.
+     *
+     * @param int $id искомый id
+     * @return IdentityInterface|null пользователь, соответствующий данному id
      */
     public static function findIdentity($id): ?IdentityInterface
     {
@@ -66,7 +78,10 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Находит пользователя по заданному access token.
+     *
+     * @param string $token искомый token
+     * @return IdentityInterface|null пользователь, соответствующий данному token
      */
     public static function findIdentityByAccessToken($token, $type = null): ?IdentityInterface
     {
@@ -74,7 +89,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return int id пользователя
      */
     public function getId(): int
     {
@@ -82,7 +97,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return string auth key пользователя
      */
     public function getAuthKey(): string
     {
@@ -90,7 +105,10 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Проверяет указанный ключ авторизации.
+     *
+     * @param string $authKey ключ авторизации
+     * @return bool результат проверки
      */
     public function validateAuthKey($authKey): bool
     {
@@ -98,10 +116,10 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Validates password
+     * Проверяет указанный пароль.
      *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
+     * @param string $password пароль, который нужно проверить
+     * @return bool результат проверки
      */
     public function validatePassword(string $password): bool
     {
@@ -109,6 +127,14 @@ class User extends ActiveRecord implements IdentityInterface
         return Yii::$app->getSecurity()->validatePassword($password, $hash);
     }
 
+    /**
+     * Этот метод вызывается перед сохранением модели в базу данных.
+     * Если это новая запись, то auth key и access token будут сгенерированы случайным образом.
+     *
+     * @param bool $insert Вызывался ли этот метод при вставке записи. Если false, это означает, что метод вызывается при обновлении записи.
+     * @return bool Результат сохранения записи. Если false, вставка записи или обновление будут отменены.
+     * @throws Exception
+     */
     public function beforeSave($insert): bool
     {
         if (parent::beforeSave($insert)) {
