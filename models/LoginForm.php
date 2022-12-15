@@ -17,7 +17,7 @@ class LoginForm extends Model
     public $password;
     public bool $rememberMe = true;
 
-    private bool|User $_user = false;
+    private bool|null|User $_user = false;
 
 
     /**
