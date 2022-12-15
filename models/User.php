@@ -15,8 +15,8 @@ use yii\web\IdentityInterface;
  * @property string $password
  * @property string $email
  * @property int $role_id
- * @property string $authKey
- * @property string $accessToken
+ * @property string $auth_key
+ * @property string $access_token
  *
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -101,7 +101,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getAuthKey(): string
     {
-        return $this->authKey;
+        return $this->auth_key;
     }
 
     /**
@@ -139,8 +139,8 @@ class User extends ActiveRecord implements IdentityInterface
     {
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
-                $this->authKey = Yii::$app->security->generateRandomString();
-                $this->accessToken = Yii::$app->security->generateRandomString();
+                $this->auth_key = Yii::$app->security->generateRandomString();
+                $this->access_token = Yii::$app->security->generateRandomString();
             }
             return true;
         }
