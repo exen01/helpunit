@@ -21,25 +21,25 @@ class LoginForm extends Model
 
 
     /**
-     * @return array the validation rules.
+     * @return array правила валидации.
      */
     public function rules(): array
     {
         return [
-            // username and password are both required
+            // username и password требуются оба
             [['username', 'password'], 'required'],
-            // rememberMe must be a boolean value
+            // rememberMe должен быть типа boolean
             ['rememberMe', 'boolean'],
-            // password is validated by validatePassword()
+            // password проверяется validatePassword()
             ['password', 'validatePassword'],
         ];
     }
 
     /**
-     * Validates the password.
-     * This method serves as the inline validation for password.
+     * Проверяет пароль.
+     * Этот метод служит встроенной проверкой для пароля.
      *
-     * @param string $attribute the attribute currently being validated
+     * @param string $attribute проверяемый атрибут
      */
     public function validatePassword(string $attribute)
     {
@@ -47,27 +47,26 @@ class LoginForm extends Model
             $user = $this->getUser();
 
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+                $this->addError($attribute, 'Неверный username или password.');
             }
         }
     }
 
     /**
-     * Logs in a user using the provided username and password.
-     * @return bool whether the user is logged in successfully
+     * Логинит пользователя, используя переданные username и password.
+     * @return bool успешно ли пользователь вошёл в систему
      */
     public function login(): bool
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
         }
         return false;
     }
 
     /**
-     * Finds user by [[username]]
-     *
-     * @return User|null
+     * Ищет пользователя по username.
+     * @return User|null найденного пользователя либо null
      */
     public function getUser(): ?User
     {
