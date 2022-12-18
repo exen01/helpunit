@@ -47,4 +47,8 @@ class Article extends ActiveRecord
             return false;
         }
     }
+    public function getUrl(): string
+    {
+        return Url::to(['article/view', 'id' => $this->id]);
+    }
 }
