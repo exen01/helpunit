@@ -34,4 +34,17 @@ class Article extends ActiveRecord
             'content' => 'Content',
         ];
     }
+    public function beforeSave($insert): bool
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->create_time = $this->update_time = time();
+            } else {
+                $this->update_time = time();
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
