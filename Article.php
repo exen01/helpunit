@@ -26,4 +26,12 @@ class Article extends ActiveRecord
             [['create_time', 'update_time'], 'integer'],
         ];
     }
+    public function attributeLabels(): array
+    {
+        return [
+            'id' => 'ID',
+            'title' => 'Title',
+            'content' => 'Content',
+        ];
+    }
 }
