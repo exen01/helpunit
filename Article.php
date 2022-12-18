@@ -17,4 +17,13 @@ class Article extends ActiveRecord
     {
         return 'article';
     }
+    public function rules(): array
+    {
+        return [
+            [['title', 'content'], 'required'],
+            [['content'], 'string'],
+            [['title'], 'string', 'max' => 128],
+            [['create_time', 'update_time'], 'integer'],
+        ];
+    }
 }
