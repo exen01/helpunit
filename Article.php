@@ -13,5 +13,8 @@ use yii\helpers\Url;
  */
 class Article extends ActiveRecord
 {
-
+    public static function tableName(): string
+    {
+        return 'article';
+    }
 }
