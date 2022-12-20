@@ -1,9 +1,12 @@
+<?php
+
 namespace app\models;
-use Yii;
+
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
+
 /**
- * This is the model class for table "article".
+ * Это класс модели для таблицы "article".
  *
  * @property int $id
  * @property string $title
@@ -13,10 +16,17 @@ use yii\helpers\Url;
  */
 class Article extends ActiveRecord
 {
+    /**
+     * @return string название таблицы, сопоставленной с этим ActiveRecord-классом.
+     */
     public static function tableName(): string
     {
         return 'article';
     }
+
+    /**
+     * @return array правила валидации для аттрибутов класса.
+     */
     public function rules(): array
     {
         return [
@@ -26,6 +36,10 @@ class Article extends ActiveRecord
             [['create_time', 'update_time'], 'integer'],
         ];
     }
+
+    /**
+     * @return string[] названия аттрибутов класса для отображения.
+     */
     public function attributeLabels(): array
     {
         return [
@@ -34,6 +48,14 @@ class Article extends ActiveRecord
             'content' => 'Content',
         ];
     }
+
+    /**
+     * Этот метод вызывается перед сохранением модели в базу данных.
+     * Если это новая запись, то auth key и access token будут сгенерированы случайным образом.
+     *
+     * @param bool $insert Вызывался ли этот метод при вставке записи. Если false, это означает, что метод вызывается при обновлении записи.
+     * @return bool Результат сохранения записи. Если false, вставка записи или обновление будут отменены.
+     */
     public function beforeSave($insert): bool
     {
         if (parent::beforeSave($insert)) {
@@ -47,6 +69,12 @@ class Article extends ActiveRecord
             return false;
         }
     }
+
+    /**
+     * Получение ссылки на статью.
+     *
+     * @return string URL статьи
+     */
     public function getUrl(): string
     {
         return Url::to(['article/view', 'id' => $this->id]);
