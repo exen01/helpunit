@@ -20,6 +20,12 @@ $this->params['breadcrumbs'][] = $this->title;
         </p>
     <?php endif; ?>
 
+    <?php if (Yii::$app->request->get('title')): ?>
+        <h1>Статьи с названием <i><?php echo Html::encode(Yii::$app->request->get('title')); ?></i></h1>
+    <?php endif; ?>
+
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
         'itemView' => '_view',

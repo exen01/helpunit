@@ -8,20 +8,18 @@ use yii\widgets\ActiveForm;
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="article-search">
+<div class="mb-3">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'options' => ['class' => 'form-horizontal'],
     ]); ?>
 
-    <?= $form->field($model, 'title') ?>
+    <?= $form->field($model, 'title')->label('Поиск по заголовку'); ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
-    </div>
+    <?= Html::submitButton('Поиск', ['class' => 'btn btn-primary mt-3']) ?>
+    <?= Html::resetButton('Сбросить', ['class' => 'btn btn-outline-secondary mt-3']) ?>
 
     <?php ActiveForm::end(); ?>
-
 </div>

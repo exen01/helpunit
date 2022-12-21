@@ -5,7 +5,7 @@ use yii\helpers\Markdown;
 
 /* @var $model app\models\Article */
 ?>
-<div class="card md-3">
+<div class="card mb-3">
     <div class="card-header">
         <?= Html::a(Html::encode($model->title), $model->getUrl()) ?>
     </div>
@@ -17,8 +17,16 @@ use yii\helpers\Markdown;
     <div class="card-footer">
         <nav class="list-group list-group-horizontal">
             <div class="list-group-item">
-                Last updated on <?= date('h:i A, F j, Y', $model->update_time); ?>
+                Последнее обновление: <?= date('h:i A M j Y e', $model->update_time); ?>
             </div>
+            <?php if (Yii::$app->user->identity->role_id < 3): ?>
+                <div class="list-group-item">
+                    <?= Html::a('Edit', ['article/update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                </div>
+                <div class="list-group-item">
+                    <?= Html::a('Delete', ['article/delete', 'id' => $model->id], ['class' => 'btn btn-danger']) ?>
+                </div>
+            <?php endif; ?>
         </nav>
     </div>
 </div>
