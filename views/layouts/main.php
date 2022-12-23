@@ -1,6 +1,7 @@
 <?php
 
 /** @var yii\web\View $this */
+
 /** @var string $content */
 
 use app\assets\AppAsset;
@@ -36,24 +37,29 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'brandUrl' => Yii::$app->homeUrl,
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
+    $menuItems = [
+        ['label' => 'Домашняя', 'url' => ['/site/index']],
+        ['label' => 'О нас', 'url' => ['/site/about']],
+        ['label' => 'Обратная связь', 'url' => ['/site/contact']],
+        ['label' => 'База знаний', 'url' => ['/article/index']],
+    ];
+
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
-        'items' => [
-            ['label' => 'Домашняя', 'url' => ['/site/index']],
-            ['label' => 'О нас', 'url' => ['/site/about']],
-            ['label' => 'Обратная связь', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest
-                ? ['label' => 'Авторизация', 'url' => ['/site/login']]
-                : '<li class="nav-item">'
-                    . Html::beginForm(['/site/logout'])
-                    . Html::submitButton(
-                        'Выйти (' . Yii::$app->user->identity->username . ')',
-                        ['class' => 'nav-link btn btn-link logout']
-                    )
-                    . Html::endForm()
-                    . '</li>'
-        ]
+        'options' => ['class' => 'navbar-nav me-auto mb-2 mb-md-0'],
+        'items' => $menuItems
     ]);
+
+    if (Yii::$app->user->isGuest) {
+        echo Html::tag('div', Html::a('Войти', ['/site/login'], ['class' => ['btn btn-primary login text-decoration-none']]), ['class' => ['d-flex']]);
+    } else {
+        echo Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex'])
+            . Html::submitButton(
+                'Выйти (' . Yii::$app->user->identity->username . ')',
+                ['class' => 'btn btn-primary logout text-decoration-none']
+            )
+            . Html::endForm();
+    }
+
     NavBar::end();
     ?>
 </header>
