@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
         'options' => ['class' => 'form-horizontal'],
     ]); ?>
 
-    <?= $form->field($model, 'title')->label('Поиск по заголовку'); ?>
+    <?= $form->field($model, 'title')->label('Поиск статьи по заголовку'); ?>
 
     <?= Html::submitButton('Поиск', ['class' => 'btn btn-primary mt-3']) ?>
     <?= Html::resetButton('Сбросить', ['class' => 'btn btn-outline-secondary mt-3']) ?>

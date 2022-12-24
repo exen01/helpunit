@@ -21,10 +21,15 @@ use yii\helpers\Markdown;
             </div>
             <?php if (Yii::$app->user->identity->role_id < 3): ?>
                 <div class="list-group-item">
-                    <?= Html::a('Edit', ['article/update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                    <?= Html::a('Редактировать', ['article/update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                 </div>
                 <div class="list-group-item">
-                    <?= Html::a('Delete', ['article/delete', 'id' => $model->id], ['class' => 'btn btn-danger']) ?>
+                    <?= Html::a('Удалить', ['article/delete', 'id' => $model->id], [
+                        'class' => 'btn btn-danger',
+                        'data' => [
+                            'confirm' => 'Вы уверены, что хотите удалить этот элемент?',
+                            'method' => 'post',
+                        ],]) ?>
                 </div>
             <?php endif; ?>
         </nav>
