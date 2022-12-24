@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\Application $model */
 
-$this->title = 'Create Application';
-$this->params['breadcrumbs'][] = ['label' => 'Applications', 'url' => ['index']];
+$this->title = 'Создание заявки';
+$this->params['breadcrumbs'][] = ['label' => 'Заявки', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="application-create">

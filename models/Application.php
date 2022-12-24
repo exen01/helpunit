@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\Url;
 
 /**
  * Это класс модели для таблицы "application".
@@ -21,7 +22,7 @@ use yii\db\ActiveRecord;
 class Application extends ActiveRecord
 {
     /**
-     * @return string название таблицы, сопоставленной с этим ActiveRecord-классом.
+     * @return string Название таблицы, сопоставленной с этим ActiveRecord-классом.
      */
     public static function tableName(): string
     {
@@ -29,12 +30,12 @@ class Application extends ActiveRecord
     }
 
     /**
-     * @return array правила валидации для аттрибутов класса.
+     * @return array Правила валидации для аттрибутов класса.
      */
     public function rules(): array
     {
         return [
-            [['title', 'content', 'create_time', 'update_time', 'author_id'], 'required'],
+            [['title', 'content'], 'required'],
             [['content'], 'string'],
             [['create_time', 'update_time', 'author_id'], 'integer'],
             [['title'], 'string', 'max' => 128],
@@ -43,14 +44,14 @@ class Application extends ActiveRecord
     }
 
     /**
-     * @return string[] названия аттрибутов класса для отображения.
+     * @return string[] Названия аттрибутов класса для отображения.
      */
     public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'content' => 'Content',
+            'title' => 'Заголовок',
+            'content' => 'Содержание',
             'create_time' => 'Create Time',
             'update_time' => 'Update Time',
             'author_id' => 'Author ID',
@@ -60,10 +61,42 @@ class Application extends ActiveRecord
     /**
      * Получает запрос для автора заявки.
      *
-     * @return ActiveQuery автор заявки
+     * @return ActiveQuery Автор заявки
      */
     public function getAuthor(): ActiveQuery
     {
         return $this->hasOne(User::class, ['id' => 'author_id']);
+    }
+
+    /**
+     * Получение ссылки на заявку.
+     *
+     * @return string URL статьи
+     */
+    public function getUrl(): string
+    {
+        return Url::to(['application/view', 'id' => $this->id]);
+    }
+
+    /**
+     * Этот метод вызывается перед сохранением модели в базу данных.
+     * Если это новая запись, то в create_time и update_time будет записана текущая временная метка Unix.
+     *
+     * @param bool $insert Вызывался ли этот метод при вставке записи. Если false, это означает, что метод вызывается при обновлении записи.
+     * @return bool Результат сохранения записи. Если false, вставка записи или обновление будут отменены.
+     */
+    public function beforeSave($insert): bool
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->create_time = $this->update_time = time();
+                $this->author_id = Yii::$app->user->id;
+            } else {
+                $this->update_time = time();
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 }
