@@ -2,9 +2,9 @@
 
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Application;
 
 /**
  * ApplicationSearch represents the model behind the search form of `app\models\Application`.
@@ -12,9 +12,9 @@ use app\models\Application;
 class ApplicationSearch extends Application
 {
     /**
-     * {@inheritdoc}
+     * @return array правила валидации для аттрибутов класса
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'create_time', 'update_time', 'author_id'], 'integer'],
@@ -23,26 +23,29 @@ class ApplicationSearch extends Application
     }
 
     /**
-     * {@inheritdoc}
+     * @return array возвращает список сценариев и соответствующих активных атрибутов
      */
-    public function scenarios()
+    public function scenarios(): array
     {
-        // bypass scenarios() implementation in the parent class
+        // обход реализации сценариевт в родительском классе, если нужно
         return Model::scenarios();
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Создает экземпляр поставщика данных с примененным поисковым запросом.
      *
-     * @param array $params
+     * @param array $params параметры
      *
-     * @return ActiveDataProvider
+     * @return ActiveDataProvider данные
      */
-    public function search($params)
+    public function search(array $params): ActiveDataProvider
     {
         $query = Application::find();
 
-        // add conditions that should always apply here
+        // если пользователь является абонентом, то показываем ему только его заявки
+        if (Yii::$app->user->identity->role_id === 3) {
+            $query->where(['author_id' => Yii::$app->user->identity->id]);
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -51,21 +54,11 @@ class ApplicationSearch extends Application
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'create_time' => $this->create_time,
-            'update_time' => $this->update_time,
-            'author_id' => $this->author_id,
-        ]);
-
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'content', $this->content]);
+        // условия фильтрации списка
+        $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
     }

@@ -10,7 +10,7 @@ use yii\filters\VerbFilter;
 use yii\web\Response;
 
 /**
- * ApplicationController implements the CRUD actions for Application model.
+ * ApplicationController реализует действия CRUD для модели Application.
  */
 class ApplicationController extends Controller
 {
@@ -33,7 +33,7 @@ class ApplicationController extends Controller
     }
 
     /**
-     * Lists all Application models.
+     * Список моделей Application.
      *
      * @return string
      */
@@ -49,10 +49,10 @@ class ApplicationController extends Controller
     }
 
     /**
-     * Displays a single Application model.
+     * Отображает одну модель Application.
      * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return string ответ пользователю
+     * @throws NotFoundHttpException если модель не найдена
      */
     public function actionView(int $id): string
     {
@@ -62,9 +62,9 @@ class ApplicationController extends Controller
     }
 
     /**
-     * Creates a new Application model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|Response
+     * Создание новой модели Application.
+     * Если создание прошло успешно, браузер будет перенаправлен на страницу просмотра.
+     * @return string|Response ответ пользователю
      */
     public function actionCreate(): Response|string
     {
@@ -84,11 +84,11 @@ class ApplicationController extends Controller
     }
 
     /**
-     * Updates an existing Application model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * Обновляет существующую модель Application.
+     * Если обновление прошло успешно, браузер будет перенаправлен на страницу просмотра.
      * @param int $id ID
-     * @return string|Response
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return string|Response ответ пользователю
+     * @throws NotFoundHttpException если модель не найдена
      */
     public function actionUpdate(int $id): Response|string
     {
@@ -104,11 +104,11 @@ class ApplicationController extends Controller
     }
 
     /**
-     * Deletes an existing Application model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * Удаляет существующую модель Application.
+     * Если удаление прошло успешно, браузер будет перенаправлен на «индексную» страницу.
      * @param int $id ID
-     * @return Response
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return Response ответ пользователю
+     * @throws NotFoundHttpException если модель не найдена
      */
     public function actionDelete(int $id): Response
     {
@@ -118,11 +118,11 @@ class ApplicationController extends Controller
     }
 
     /**
-     * Finds the Application model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
+     * Находит модель статьи на основе ее значения первичного ключа.
+     * Если модель не найдена, будет выдано исключение 404 HTTP.
      * @param int $id ID
-     * @return Application the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return Application загруженная модель
+     * @throws NotFoundHttpException если модель не найдена
      */
     protected function findModel(int $id): Application
     {
@@ -130,6 +130,6 @@ class ApplicationController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('Запрошенная страница не существует.');
     }
 }
