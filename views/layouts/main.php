@@ -42,6 +42,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         ['label' => 'О нас', 'url' => ['/site/about']],
         ['label' => 'Обратная связь', 'url' => ['/site/contact']],
         ['label' => 'База знаний', 'url' => ['/article/index']],
+        ['label' => 'Заявки', 'url' => ['/application/index']],
     ];
 
     echo Nav::widget([

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\models\ArticleSearch $model */
+/** @var app\models\ApplicationSearch $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
@@ -16,10 +16,11 @@ use yii\widgets\ActiveForm;
         'options' => ['class' => 'form-horizontal'],
     ]); ?>
 
-    <?= $form->field($model, 'title')->label('Поиск статьи по заголовку'); ?>
+    <?= $form->field($model, 'title')->label('Поиск заявки по заголовку') ?>
 
     <?= Html::submitButton('Поиск', ['class' => 'btn btn-primary mt-3']) ?>
     <?= Html::resetButton('Сбросить', ['class' => 'btn btn-outline-secondary mt-3']) ?>
 
     <?php ActiveForm::end(); ?>
+
 </div>
