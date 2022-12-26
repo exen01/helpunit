@@ -23,7 +23,7 @@ use yii\helpers\Markdown;
                 <?= Html::a('Редактировать', ['application/update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             </div>
             <div class="list-group-item">
-                <?= Html::a('Удалить', ['article/delete', 'id' => $model->id], [
+                <?= Html::a('Удалить', ['application/delete', 'id' => $model->id], [
                     'class' => 'btn btn-danger',
                     'data' => [
                         'confirm' => 'Вы уверены, что хотите удалить этот элемент?',
