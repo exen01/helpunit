@@ -16,7 +16,7 @@ YiiAsset::register($this);
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php if (Yii::$app->user->identity->role_id < 3): ?>
+    <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role_id < 3): ?>
         <p>
             <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             <?= Html::a('Delete', ['delete', 'id' => $model->id], [

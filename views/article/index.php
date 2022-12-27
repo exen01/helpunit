@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php if (Yii::$app->user->identity->role_id < 3): ?>
+    <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role_id < 3): ?>
         <p>
             <?= Html::a('Новая статья', ['create'], ['class' => 'btn btn-success']) ?>
         </p>

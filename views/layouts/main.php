@@ -42,8 +42,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         ['label' => 'О нас', 'url' => ['/site/about']],
         ['label' => 'Обратная связь', 'url' => ['/site/contact']],
         ['label' => 'База знаний', 'url' => ['/article/index']],
-        ['label' => 'Заявки', 'url' => ['/application/index']],
     ];
+    if (!Yii::$app->user->isGuest) {
+        $menuItems[] = ['label' => 'Заявки', 'url' => ['/application/index']];
+    }
 
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav me-auto mb-2 mb-md-0'],

@@ -19,7 +19,7 @@ use yii\helpers\Markdown;
             <div class="list-group-item">
                 Последнее обновление: <?= date('h:i A M j Y e', $model->update_time); ?>
             </div>
-            <?php if (Yii::$app->user->identity->role_id < 3): ?>
+            <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role_id < 3): ?>
                 <div class="list-group-item">
                     <?= Html::a('Редактировать', ['article/update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                 </div>
