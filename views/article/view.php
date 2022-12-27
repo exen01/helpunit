@@ -29,7 +29,7 @@ YiiAsset::register($this);
         </p>
     <?php endif; ?>
 
-    <p>Last updated on <?= date('h:i A, F j, Y', $model->update_time); ?></p>
+    <p>Последнее обновление: <?= date('h:i A F j Y e', $model->update_time); ?></p>
     <p>
         <?= Markdown::process($model->content); ?>
     </p>

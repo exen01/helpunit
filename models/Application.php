@@ -2,26 +2,31 @@
 
 namespace app\models;
 
+use Yii;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
 
 /**
- * Это класс модели для таблицы "article".
+ * Это класс модели для таблицы "application".
  *
  * @property int $id
  * @property string $title
  * @property string $content
  * @property int $create_time
  * @property int $update_time
+ * @property int $author_id
+ *
+ * @property User $author
  */
-class Article extends ActiveRecord
+class Application extends ActiveRecord
 {
     /**
      * @return string Название таблицы, сопоставленной с этим ActiveRecord-классом.
      */
     public static function tableName(): string
     {
-        return 'article';
+        return 'application';
     }
 
     /**
@@ -32,8 +37,9 @@ class Article extends ActiveRecord
         return [
             [['title', 'content'], 'required'],
             [['content'], 'string'],
+            [['create_time', 'update_time', 'author_id'], 'integer'],
             [['title'], 'string', 'max' => 128],
-            [['create_time', 'update_time'], 'integer'],
+            [['author_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['author_id' => 'id']],
         ];
     }
 
@@ -46,7 +52,30 @@ class Article extends ActiveRecord
             'id' => 'ID',
             'title' => 'Заголовок',
             'content' => 'Содержание',
+            'create_time' => 'Create Time',
+            'update_time' => 'Update Time',
+            'author_id' => 'Author ID',
         ];
+    }
+
+    /**
+     * Получает запрос для автора заявки.
+     *
+     * @return ActiveQuery Автор заявки
+     */
+    public function getAuthor(): ActiveQuery
+    {
+        return $this->hasOne(User::class, ['id' => 'author_id']);
+    }
+
+    /**
+     * Получение ссылки на заявку.
+     *
+     * @return string URL статьи
+     */
+    public function getUrl(): string
+    {
+        return Url::to(['application/view', 'id' => $this->id]);
     }
 
     /**
@@ -61,6 +90,7 @@ class Article extends ActiveRecord
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
                 $this->create_time = $this->update_time = time();
+                $this->author_id = Yii::$app->user->id;
             } else {
                 $this->update_time = time();
             }
@@ -68,15 +98,5 @@ class Article extends ActiveRecord
         } else {
             return false;
         }
-    }
-
-    /**
-     * Получение ссылки на статью.
-     *
-     * @return string URL статьи
-     */
-    public function getUrl(): string
-    {
-        return Url::to(['article/view', 'id' => $this->id]);
     }
 }

@@ -7,16 +7,16 @@ use yii\widgets\ListView;
 /** @var app\models\ArticleSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Articles';
+$this->title = 'База знаний';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="article-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php if (Yii::$app->user->identity->role_id < 3): ?>
+    <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role_id < 3): ?>
         <p>
-            <?= Html::a('Create Article', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Новая статья', ['create'], ['class' => 'btn btn-success']) ?>
         </p>
     <?php endif; ?>
 
